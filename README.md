@@ -25,6 +25,8 @@ Active Record for Titanium
     a2.title # => 'Awesome Article'
     a2.body # => 'Lorem Ipsum...'
     a2.user_id # => 8
+    a2.created_at # => 2012-08-20 20:20:20
+    a2.updated_at # => 2012-08-20 20:20:20
 
     a2.destroy()
 
@@ -68,6 +70,46 @@ Active Record for Titanium
         image_url: 'text'
         image_name: 'text'
         pv: 'integer'
+
+    Article.init()
+
+    module.exports = Article
+
+## Easy Extend
+
+    #
+    # Resources/models/article.coffee
+    #
+    Database = require 'lib/database'
+
+    class Article extends Database
+
+      @dbName = 'myapp'
+      @tableName = 'articles'
+      @properties =
+        uid: 'integer'
+        title: 'text'
+        body: 'text'
+        image_url: 'text'
+        image_name: 'text'
+        pv: 'integer'
+
+      #
+      # class method
+      #
+      @findByTitle = (title) ->
+        sql = "SELECT * FROM #{@tableName} WHERE TITLE = ?"
+        results = @read sql, title
+        results[0]
+
+      #
+      # instance method
+      #
+      getImageDir: ->
+        imageDir = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, "article#{@uid}")
+        unless imageDir.exists()
+          imageDir.createDirectory()
+        imageDir
 
     Article.init()
 
