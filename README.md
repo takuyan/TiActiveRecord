@@ -5,29 +5,30 @@ Active Record for Titanium
 # Usage
 
     a1 = Article.build
-      uid: 1
+      uid: 10
       title: 'Awesome Article'
       body: 'Lorem Ipsum...'
-      user_id: 1
+      user_id: 8
 
-    a1.isNewRecord # => true
+    a1.isNewRecord() # => true
 
     a1.save()
 
-    a1.isNewRecord # => false
+    a1.isNewRecord() # => false
 
-    ***
+***
 
     a2 = Article.find 1
 
     a2.id # => 1
-    a2.user_id # => 1
+    a2.uid # => 10
     a2.title # => 'Awesome Article'
     a2.body # => 'Lorem Ipsum...'
+    a2.user_id # => 8
 
     a2.destroy()
 
-    ***
+***
 
     a3 = Article.create
       uid: 3
@@ -35,9 +36,9 @@ Active Record for Titanium
       body: 'lorem ipsum...'
       user_id: 3
 
-    a3.isNewRecord # => false
+    a3.isNewRecord() # => false
 
-    ***
+***
 
     articles = Article.all()
 
