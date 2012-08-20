@@ -97,10 +97,9 @@ Active Record for Titanium
       #
       # class method
       #
-      @findByTitle = (title) ->
-        sql = "SELECT * FROM #{@tableName} WHERE TITLE = ?"
-        results = @read sql, title
-        results[0]
+      @findAllByUserId = (userId) ->
+        sql = "SELECT * FROM #{@tableName} WHERE USER_ID = ?"
+        @read sql, userId
 
       #
       # instance method
