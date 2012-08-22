@@ -1,8 +1,10 @@
 # TiActiveRecord
 
-Active Record for Titanium
+Active Record Pattern of CoffeeScript for Titanium.
 
-# Usage
+# Example
+
+`sample1.coffee`
 
     a1 = Article.build
       uid: 10
@@ -18,6 +20,8 @@ Active Record for Titanium
 
 ***
 
+`sample2.coffee`
+
     a2 = Article.find 1
 
     a2.id # => 1
@@ -32,6 +36,8 @@ Active Record for Titanium
 
 ***
 
+`sample3.coffee`
+
     a3 = Article.create
       uid: 3
       title: 'Wonderful Article'
@@ -41,6 +47,8 @@ Active Record for Titanium
     a3.isNewRecord() # => false
 
 ***
+
+`sample4.coffee`
 
     articles = Article.all()
 
@@ -52,14 +60,15 @@ Active Record for Titanium
     Article.deleteAll
       user_id: 3
 
-# Model Setup
+## Model Setup
 
     #
-    # Resources/models/article.coffee
+    # lib/models/article.coffee
+    # => Resources/models/article.js
     #
-    Database = require 'lib/database'
+    TiActiveRecord = require 'lib/TiActiveRecord'
 
-    class Article extends Database
+    class Article extends TiActiveRecord
 
       @dbName = 'myapp'
       @tableName = 'articles'
@@ -78,11 +87,12 @@ Active Record for Titanium
 ## Easy Extend
 
     #
-    # Resources/models/article.coffee
+    # lib/models/article.coffee
+    # => Resources/models/article.js
     #
-    Database = require 'lib/database'
+    TiActiveRecord = require 'lib/TiActiveRecord'
 
-    class Article extends Database
+    class Article extends TiActiveRecord
 
       @dbName = 'myapp'
       @tableName = 'articles'
@@ -113,4 +123,18 @@ Active Record for Titanium
     Article.init()
 
     module.exports = Article
+
+## Usage
+
+Dowonload `lib/lib/TiActiveRecord.coffee`,  and compile to javascript.
+
+or
+
+if you use Git, clone this project on Titanium Mobile project root directory.
+
+    $ git clone git://github.com/takuyan/TiActiveRecord.git coffee
+    $ cd coffee
+    $ bundle install
+    $ bundle exec guard
+
 
