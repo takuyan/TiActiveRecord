@@ -126,7 +126,7 @@ Active Record Pattern of CoffeeScript for Titanium.
 
 ## Usage
 
-Dowonload `lib/lib/TiActiveRecord.coffee`,  and compile to javascript.
+Download `lib/lib/TiActiveRecord.coffee`,  and compile to javascript.
 
 or
 
