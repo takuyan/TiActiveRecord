@@ -61,7 +61,10 @@ classProperties =
   tableProperties: ->
     properties = Object.create @properties
     for k, v of @defaultProperties
-      properties[k] = v
+      if @auto_increment && k == 'id'
+        properties[k] = "#{v} AUTOINCREMENT"
+      else
+        properties[k] = v
     properties
 
   installDb: ->
@@ -281,7 +284,7 @@ class TiActiveRecord extends Module
   @include instanceProperties
 
   @defaultProperties =
-    id: 'INTEGER PRIMARY KEY AUTOINCREMENT'
+    id: 'INTEGER PRIMARY KEY'
     created_at: 'DATETIME'
     updated_at: 'DATETIME'
 
