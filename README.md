@@ -72,8 +72,8 @@ Active Record Pattern of CoffeeScript for Titanium.
 
       @dbName = 'myapp'
       @tableName = 'articles'
-      # @remove_auto_increment = true # If you do not need 'AUTOINCREMENT' to id, please set to false
-      # @remove_primary_key = true    # If you do not need 'PRIMARY KEY' to id, please set to false
+      # @remove_auto_increment = true # If you do not need 'AUTOINCREMENT' to id, please set to true
+      # @remove_primary_key = true    # If you do not need 'PRIMARY KEY' to id, please set to true
       @properties =
         uid: 'integer'
         title: 'text'
@@ -139,4 +139,4 @@ if you use Git, clone this project on Titanium Mobile project root directory.
     $ bundle install
     $ bundle exec guard
 
-
+Need ruby 1.9+ and [bundler](http://gembundler.com/).
