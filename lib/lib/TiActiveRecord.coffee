@@ -58,11 +58,19 @@ classProperties =
   columns: ->
     (k for k, v of @tableProperties())
 
+  #
+  # If @remove_auto_increment = true, AUTOINCREMENT is not define on id column
+  # If @remove_primary_key = true, PRIMARY KEY is not define on id column
+  #
   tableProperties: ->
     properties = Object.create @properties
     for k, v of @defaultProperties
-      if @auto_increment && k == 'id'
-        properties[k] = "#{v} AUTOINCREMENT"
+      if k == 'id'
+        if @remove_auto_increment
+          v = v.replace /AUTOINCREMENT/, ''
+        if @remove_primary_key
+          v = v.replace /PRIMARY KEY/, ''
+        properties[k] = v
       else
         properties[k] = v
     properties
@@ -284,7 +292,7 @@ class TiActiveRecord extends Module
   @include instanceProperties
 
   @defaultProperties =
-    id: 'INTEGER PRIMARY KEY'
+    id: 'INTEGER PRIMARY KEY AUTOINCREMENT'
     created_at: 'DATETIME'
     updated_at: 'DATETIME'
 

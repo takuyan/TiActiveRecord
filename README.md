@@ -72,7 +72,8 @@ Active Record Pattern of CoffeeScript for Titanium.
 
       @dbName = 'myapp'
       @tableName = 'articles'
-      @auto_increment = true # if you want 'AUTOINCREMENT' to id column
+      # @remove_auto_increment = true # If you do not need 'AUTOINCREMENT' to id, please set to false
+      # @remove_primary_key = true    # If you do not need 'PRIMARY KEY' to id, please set to false
       @properties =
         uid: 'integer'
         title: 'text'
