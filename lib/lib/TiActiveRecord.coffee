@@ -26,9 +26,7 @@ classProperties =
     sql = "CREATE TABLE IF NOT EXISTS #{@tableName} ("
     i = 0
     for k, v of @tableProperties()
-      columnName = k
-      columnType = v
-      column = columnName + " " + columnType
+      column = "#{k} #{v}"
       sql += column if i == 0
       sql += "," + column if i > 0
       i++
