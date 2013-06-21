@@ -4,129 +4,135 @@ Active Record Pattern of CoffeeScript for Titanium.
 
 # Example
 
-`sample1.coffee`
+### sample1.coffee
 
-    a1 = Article.build
-      uid: 10
-      title: 'Awesome Article'
-      body: 'Lorem Ipsum...'
-      user_id: 8
+``` coffeescript
+a1 = Article.build
+  uid: 10
+  title: 'Awesome Article'
+  body: 'Lorem Ipsum...'
+  user_id: 8
 
-    a1.isNewRecord() # => true
+a1.isNewRecord() # => true
 
-    a1.save()
+a1.save()
 
-    a1.isNewRecord() # => false
+a1.isNewRecord() # => false
+```
 
-***
+### sample2.coffee
 
-`sample2.coffee`
+``` coffeescript
+a2 = Article.find 1
 
-    a2 = Article.find 1
+a2.id # => 1
+a2.uid # => 10
+a2.title # => 'Awesome Article'
+a2.body # => 'Lorem Ipsum...'
+a2.user_id # => 8
+a2.created_at # => 2012-08-20 20:20:20
+a2.updated_at # => 2012-08-20 20:20:20
 
-    a2.id # => 1
-    a2.uid # => 10
-    a2.title # => 'Awesome Article'
-    a2.body # => 'Lorem Ipsum...'
-    a2.user_id # => 8
-    a2.created_at # => 2012-08-20 20:20:20
-    a2.updated_at # => 2012-08-20 20:20:20
+a2.destroy()
+```
 
-    a2.destroy()
+### sample3.coffee
 
-***
+``` coffeescript
+a3 = Article.create
+  uid: 3
+  title: 'Wonderful Article'
+  body: 'lorem ipsum...'
+  user_id: 3
 
-`sample3.coffee`
+a3.isNewRecord() # => false
+```
 
-    a3 = Article.create
-      uid: 3
-      title: 'Wonderful Article'
-      body: 'lorem ipsum...'
-      user_id: 3
+### sample4.coffee
 
-    a3.isNewRecord() # => false
+``` coffeescript
+articles = Article.all()
 
-***
+someUsersArticles = Article.find
+  user_id: 1
 
-`sample4.coffee`
+someUsersArticles.length # => 3
 
-    articles = Article.all()
+Article.deleteAll
+  user_id: 3
+```
 
-    someUsersArticles = Article.find
-      user_id: 1
+# Model Setup
 
-    someUsersArticles.length # => 3
+``` coffeescript
+#
+# lib/models/article.coffee
+# => Resources/models/article.js
+#
+TiActiveRecord = require 'lib/TiActiveRecord'
 
-    Article.deleteAll
-      user_id: 3
+class Article extends TiActiveRecord
 
-## Model Setup
+  @dbName = 'myapp'
+  @tableName = 'articles'
+  # @remove_auto_increment = true # If you do not need 'AUTOINCREMENT' to id, please set to true
+  # @remove_primary_key = true    # If you do not need 'PRIMARY KEY' to id, please set to true
+  @properties =
+    uid: 'integer'
+    title: 'text'
+    body: 'text'
+    image_url: 'text'
+    image_name: 'text'
+    pv: 'integer'
 
-    #
-    # lib/models/article.coffee
-    # => Resources/models/article.js
-    #
-    TiActiveRecord = require 'lib/TiActiveRecord'
+Article.init()
 
-    class Article extends TiActiveRecord
+module.exports = Article
+```
 
-      @dbName = 'myapp'
-      @tableName = 'articles'
-      # @remove_auto_increment = true # If you do not need 'AUTOINCREMENT' to id, please set to true
-      # @remove_primary_key = true    # If you do not need 'PRIMARY KEY' to id, please set to true
-      @properties =
-        uid: 'integer'
-        title: 'text'
-        body: 'text'
-        image_url: 'text'
-        image_name: 'text'
-        pv: 'integer'
+# Easy Extend
 
-    Article.init()
+``` coffeescript
+#
+# lib/models/article.coffee
+# => Resources/models/article.js
+#
+TiActiveRecord = require 'lib/TiActiveRecord'
 
-    module.exports = Article
+class Article extends TiActiveRecord
 
-## Easy Extend
+  @dbName = 'myapp'
+  @tableName = 'articles'
+  @properties =
+    uid: 'integer'
+    title: 'text'
+    body: 'text'
+    image_url: 'text'
+    image_name: 'text'
+    pv: 'integer'
 
-    #
-    # lib/models/article.coffee
-    # => Resources/models/article.js
-    #
-    TiActiveRecord = require 'lib/TiActiveRecord'
+  #
+  # class method
+  #
+  @findAllByUserId = (userId) ->
+    sql = "SELECT * FROM #{@tableName} WHERE USER_ID = ?"
+    @read sql, userId
 
-    class Article extends TiActiveRecord
+  #
+  # instance method
+  #
+  getImageDir: ->
+    imageDir = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, "article#{@uid}")
+    unless imageDir.exists()
+      imageDir.createDirectory()
+    imageDir
 
-      @dbName = 'myapp'
-      @tableName = 'articles'
-      @properties =
-        uid: 'integer'
-        title: 'text'
-        body: 'text'
-        image_url: 'text'
-        image_name: 'text'
-        pv: 'integer'
+Article.init()
 
-      #
-      # class method
-      #
-      @findAllByUserId = (userId) ->
-        sql = "SELECT * FROM #{@tableName} WHERE USER_ID = ?"
-        @read sql, userId
+module.exports = Article
+```
 
-      #
-      # instance method
-      #
-      getImageDir: ->
-        imageDir = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, "article#{@uid}")
-        unless imageDir.exists()
-          imageDir.createDirectory()
-        imageDir
-
-    Article.init()
-
-    module.exports = Article
-
-## Usage
+# Usage
 
 Download `lib/lib/TiActiveRecord.coffee`,  and compile to javascript.
 
@@ -134,9 +140,11 @@ or
 
 if you use Git, clone this project on Titanium Mobile project root directory.
 
-    $ git clone git://github.com/takuyan/TiActiveRecord.git coffee
-    $ cd coffee
-    $ bundle install
-    $ bundle exec guard
+```
+$ git clone git://github.com/takuyan/TiActiveRecord.git coffee
+$ cd coffee
+$ bundle install
+$ bundle exec guard
+```
 
 Need ruby 1.9+ and [bundler](http://gembundler.com/).
